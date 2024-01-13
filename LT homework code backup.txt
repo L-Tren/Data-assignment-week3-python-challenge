@@ -1,0 +1,176 @@
+Used solved code as a blueprint
+
+UADEL-VIRT-DATA-PT-12-2023-U-LOLC04-Data-Analysis-Pandas
+2
+Activities
+07-Par_Census_GroupBy
+Solved
+rented_properties_solution.ipynb
+
+UADEL-VIRT-DATA-PT-12-2023-U-LOLC
+04-Data-Analysis-Pandas
+2
+Activities
+06-Ins_GroupBy
+Solved
+
+Utilised Ask BCS, troublshooting with the following personnel
+Noah
+Khan
+
+Utilised Xpert Learning Assistant
+
+code back up
+
+PyBank
+___________________________________________________
+# Import the Pandas library
+from pathlib import Path
+import pandas as pd
+
+import os
+import csv 
+
+# Create a reference to the CSV file
+csv_path = os.path.join("Resources/budget_data.csv")
+
+# Read the CSV file into a DataFrame
+df = pd.read_csv(csv_path)
+df.head()
+
+# Sum number of months
+num_months = len(df['Date'])
+print("Total Months: ", num_months)
+
+# Sum total Profit/Loss
+# Calculate the total profit
+total_profit = df['Profit/Losses'].sum()
+
+# Print the total profit
+print("Total Profit:", total_profit)
+
+# Calculate the number of months
+total_months = df.shape[0]
+
+# Calculate the change between the first and last figures
+first_figure = df['Profit/Losses'].iloc[0]
+last_figure = df['Profit/Losses'].iloc[-1]
+change = last_figure - first_figure
+
+# Calculate the average change
+average_change = change / (total_months - 1)
+
+# Print the total profit, change, and average change
+
+print("Average Change:", average_change)
+
+# Skip the header row
+df = df.iloc[1:]
+
+# Initialize variables
+max_increase = 0
+max_increase_month = ""
+
+# Initialize the previous month's profit/loss
+previous_profit_loss = 0
+
+# Iterate through the dataset
+for index, row in df.iterrows():
+    # Get the current month and profit/loss
+    month = row['Date']
+    profit_loss = row['Profit/Losses']
+
+    # Calculate the difference between the current month's profit/loss and the previous month's profit/loss
+    increase = profit_loss - previous_profit_loss
+
+    # Check if the current increase is greater than the maximum increase
+    if increase > max_increase:
+        max_increase = increase
+        max_increase_month = month
+
+    # Update the previous month's profit/loss
+    previous_profit_loss = profit_loss
+
+# Print the month with the greatest increase in profits
+print(f"Greatest Increase in Profits {max_increase_month} ${max_increase}")
+
+# Skip the header row
+df = df.iloc[1:]
+
+# Initialize variables
+max_decrease = 0
+max_decrease_month = ""
+
+# Initialize the previous month's profit/loss
+previous_profit_loss = 0
+
+# Iterate through the dataset
+for index, row in df.iterrows():
+    # Get the current month and profit/loss
+    month = row['Date']
+    profit_loss = row['Profit/Losses']
+
+    # Calculate the difference between the current month's profit/loss and the previous month's profit/loss
+    decrease = profit_loss - previous_profit_loss
+
+    # Check if the current increase is greater than the maximum increase
+    if decrease < max_decrease:
+        max_decrease = decrease
+        max_decrease_month = month
+
+    # Update the previous month's profit/loss
+    previous_profit_loss = profit_loss
+
+# Print the month with the greatest increase in profits
+print(f"Greatest Decrease in Profits {max_decrease_month} ${max_decrease}")
+
+PyPoll
+___________________________________________________
+
+# Import the Pandas library
+from pathlib import Path
+import pandas as pd
+
+import os
+import csv 
+
+# Create a reference to the CSV file
+csv_path = os.path.join("Resources/election_data.csv")
+
+# Read the CSV file into a DataFrame
+df = pd.read_csv(csv_path)
+df.head()
+
+# Sum number of total votes
+total_votes = len(df['Ballot ID'])
+print("Election Results")
+print("-------------------------------------------------------------------------------------")
+print("Total Votes: ", total_votes)
+print("-------------------------------------------------------------------------------------")
+
+# Count each candidates total votes
+vote_counts = df["Candidate"].value_counts()
+
+# Calculate the total votes
+total_votes = vote_counts.sum()
+
+# Calculate the percentage of votes for each candidate
+vote_percentages = (vote_counts / total_votes) * 100
+
+# Create DataFrame with the candidate, percentage of votes, and total votes
+result_df = pd.DataFrame({"Percentage of Votes": vote_percentages, "Total Votes": vote_counts})
+
+# Set the candidate name as the index
+result_df.index.name = "Candidate"
+
+# Format the percentage of votes column 
+result_df["Percentage of Votes"] = result_df["Percentage of Votes"].map("{:.2f}%".format)
+
+# Find the candidate with the most votes
+winner = result_df["Total Votes"].idxmax()
+
+# Display the result
+print(result_df)
+print("-------------------------------------------------------------------------------------")
+print("Winner: " + winner)
+print("-------------------------------------------------------------------------------------")
